@@ -8,6 +8,7 @@ import cl.angel.rest.repositorio.RepositorioAprobacion;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -39,6 +40,7 @@ public class AdministradorAprobacion {
         return lista;
     }
 
+    @Transactional
     public Aprobacion guardar(Aprobacion apr) {
         Aprobacion guardado = null;
         if (apr != null) {
@@ -47,6 +49,7 @@ public class AdministradorAprobacion {
         return guardado;
     }
 
+    @Transactional
     public void eliminar(Aprobacion apr) {
         if (apr != null) {
             repositorioAprobacion.delete(apr);
