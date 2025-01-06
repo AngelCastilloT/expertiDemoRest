@@ -7,12 +7,11 @@ package cl.angel.rest.dominio.vo;
 import cl.angel.rest.dominio.modelo.Angel;
 import cl.angel.rest.dominio.modelo.Empleado;
 import cl.angel.rest.dominio.modelo.Aprobacion;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-/**
- *
- * @author angelexperti
- */
+@Schema(description = "Objeto que representa los datos de una aprobación")
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AprobacionVO extends Angel {
     @Schema(description = "Empleado de la aprobación", example = "12111111")
     private final Empleado empleado;
@@ -41,7 +40,7 @@ public class AprobacionVO extends Angel {
         this.aceptado = apr.isAceptado();
     }
     
-    public Empleado empleado() {
+    public Empleado getEmpleado() {
         return empleado;
     }
 

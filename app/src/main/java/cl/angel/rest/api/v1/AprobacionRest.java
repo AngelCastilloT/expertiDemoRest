@@ -4,7 +4,6 @@ import cl.angel.rest.administrador.AdministradorAprobacion;
 import cl.angel.rest.administrador.AdministradorEmpleado;
 import cl.angel.rest.dominio.modelo.Aprobacion;
 import cl.angel.rest.dominio.modelo.Empleado;
-import cl.angel.rest.dominio.vo.EmpleadoVO;
 import cl.angel.rest.dominio.vo.AprobacionVO;
 import cl.angel.rest.excepcion.DatoMaloException;
 import cl.angel.rest.excepcion.RepetidoException;
@@ -12,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import cl.angel.rest.excepcion.SinDatosException;
 import cl.angel.rest.utils.TextoUtils;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -71,12 +70,7 @@ public class AprobacionRest {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<AprobacionVO> crearAprobacion(@PathVariable("rut") Long rut, @RequestBody AprobacionVO body) {
-
-//        final Long bodyRut = body.getRut();
-//        if (bodyRut != null && !java.util.Objects.equals(rut, bodyRut)) {
-//            throw new DatoMaloException("Los ruts no coinciden");
-//        }
-
+        
         final String motivo = TextoUtils.normalizar(body.getMotivo());
         if (StringUtils.isBlank(motivo)) {
             throw new DatoMaloException("El motivo no puede ser vacíos");
@@ -108,7 +102,7 @@ public class AprobacionRest {
     @PutMapping(value = "/{rut}",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<AprobacionVO> actualizarAprobacion(@PathVariable("rut") Long rut, @RequestBody AprobacionVO body) {
+    public ResponseEntity<AprobacionVO> actualizarAprobacion(@PathVariable("rut") Long rut, @RequestParam("motivoBusqueda") String motivoBusqueda ,@RequestBody AprobacionVO body) {
         
         String motivo = TextoUtils.normalizar(body.getMotivo());
         if (StringUtils.isBlank(motivo)) {
@@ -123,7 +117,7 @@ public class AprobacionRest {
             throw new SinDatosException(String.format("No existe un empleado con rut %d", rut));
         }
 
-        Aprobacion apr = administradorAprobacion.consultar(motivo, emp);
+        Aprobacion apr = administradorAprobacion.consultar(motivoBusqueda, emp);
         if(apr == null){
             throw new SinDatosException(String.format("No existe una solicitud de vacacion del empleado con rut %d y con motivo %s", rut, motivo));
         }
@@ -137,7 +131,7 @@ public class AprobacionRest {
 
         Aprobacion actualizado = administradorAprobacion.guardar(apr);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new AprobacionVO(actualizado));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new AprobacionVO(actualizado));
     }
     
     //ELIMINACIÓN -> DELETE

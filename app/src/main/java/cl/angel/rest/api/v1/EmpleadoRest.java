@@ -78,7 +78,7 @@ public class EmpleadoRest {
         return ResponseEntity.ok(new EmpleadoVO(empleado));
     }
 
-    //CREACIÓN -> POST
+    @Operation(summary = "Crea empleado", description = "Crea en la base de datos un empleado con un rut que no se encuentre en la base de datos")
     @PostMapping(value = "/{rut}",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -127,7 +127,7 @@ public class EmpleadoRest {
         return ResponseEntity.status(HttpStatus.CREATED).body(new EmpleadoVO(creado));
     }
 
-    //ACTUALIZACIÓN -> PUT
+    @Operation(summary = "Actualiza empleado", description = "Actualiza los datos de un empleado en la base de datos")
     @PutMapping(value = "/{rut}",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -176,7 +176,7 @@ public class EmpleadoRest {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(new EmpleadoVO(actualizado));
     }
 
-    //ELIMINACIÓN -> DELETE
+    @Operation(summary = "Elimina empleado", description = "Elimina un empleado de la base de datos con el rut asociado")
     @DeleteMapping(value = "/{rut}",
             consumes = {MediaType.ALL_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
