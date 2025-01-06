@@ -4,6 +4,7 @@
  */
 package cl.angel.rest.dominio.vo;
 
+import cl.angel.rest.dominio.modelo.Angel;
 import cl.angel.rest.dominio.modelo.Empleado;
 import cl.angel.rest.dominio.modelo.Aprobacion;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,7 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  *
  * @author angelexperti
  */
-public class AprobacionVO {
+public class AprobacionVO extends Angel {
     @Schema(description = "Empleado de la aprobación", example = "12111111")
     private final Empleado empleado;
 
